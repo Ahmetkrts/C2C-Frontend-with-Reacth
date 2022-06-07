@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createUser, getAllUser, updateUser, getByUserId, deleteUser } from '../apiCall'
+import { createUser, getAllUser, updateUser, getByUserId, deleteUser, getAllImage } from '../apiCall'
 
 class UserData extends Component {
     state = {
@@ -17,7 +17,8 @@ class UserData extends Component {
         profileImageId: null,
         error: null,
         errors: [],
-        users: []
+        users: [],
+        images: []
     };
 
     onChange = event => {
@@ -43,6 +44,8 @@ class UserData extends Component {
             profileImageId: this.state.profileImageId,
         };
 
+        console.log(body.userSeller)
+
         try {
             const response = await createUser(body);
         } catch (error) {
@@ -58,7 +61,15 @@ class UserData extends Component {
 
     componentDidMount() {
         this.getAllUserForTable();
+        this.getAllImagesForTable();
     };
+    getAllImagesForTable() {
+        getAllImage().then(response => {
+            this.setState({
+                images: response.data.data
+            })
+        })
+    }
 
     getAllUserForTable() {
         getAllUser().then(response => {
@@ -152,21 +163,10 @@ class UserData extends Component {
 
     render() {
 
-        const { users, userFirstName, userLastName, userId, userName, userPassword, userMail, userCountry, userRegisterDate, userAbout, userSeller, coverImageId, profileImageId, error, errors } = this.state;
+        const { images, users, userFirstName, userLastName, userId, userName, userPassword, userMail, userCountry, userRegisterDate, userAbout, userSeller, coverImageId, profileImageId, error, errors } = this.state;
         return (
             <>
-                {/* userFirstName: null,
-            userLastName: null,
-            userName: null,
-            userPassword: null,
-            userMail: null,
-            userCountry: null,
-            userRegisterDate: null,
-            userAbout: null,
-            userSeller: null,
-            coverImageId: null,
-
-            profileImageId: null, */}
+                { }
                 <div className="form-group">
                     <label className="col-sm-3 control-label">Ad </label>
                     <div className="col-sm-9">
@@ -212,20 +212,40 @@ class UserData extends Component {
                 <div className="form-group">
                     <label className="col-sm-3 control-label">Kullanıcı Satıcı Mı ?</label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={userSeller != null ? userSeller : ''} defaultValue={userSeller} name="userSeller" onChange={this.onChange} />
+                        <select className="form-control" value={userSeller != null ? userSeller : ''} defaultValue={userSeller} name="userSeller" onChange={this.onChange}>
+                            <option value="">Seçilmedi</option>
+                            <option value="Satıcı">Satıcı</option>
+                            <option value="Admin">Admin</option>
+                        </select>
                     </div>
                 </div>
 
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Kullanıcı Kapak resmi Id</label>
+                    <label className="col-sm-3 control-label">Kullanıcı Kapak resmi </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={coverImageId != null ? coverImageId : ''} defaultValue={coverImageId} name="coverImageId" onChange={this.onChange} />
+                        <select className="form-control" value={coverImageId != null ? coverImageId : ''} defaultValue={coverImageId} name="coverImageId" onChange={this.onChange}>
+                            <option value="0">Kullanıcı kapak Resmi Seçilmedi</option>
+
+                            {images.map((image) => (
+                                <option value={image.imageId}>{image.imageId}{" "} -{" "}{image.imageSubInfo}</option>
+                            ))}
+
+
+                        </select>
+
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Kullanıcı Profil resmi Id</label>
+                    <label className="col-sm-3 control-label">Kullanıcı Profil resmi</label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={profileImageId != null ? profileImageId : ''} defaultValue={profileImageId} name="profileImageId" onChange={this.onChange} />
+                        <select className="form-control" value={profileImageId != null ? profileImageId : ''} defaultValue={profileImageId} name="profileImageId" onChange={this.onChange} >
+
+                            <option value="0">Kullanıcı Profil resmi Seçilmedi</option>
+
+                            {images.map((image) => (
+                                <option value={image.imageId}>{image.imageId}{" "} -{" "}{image.imageSubInfo}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 

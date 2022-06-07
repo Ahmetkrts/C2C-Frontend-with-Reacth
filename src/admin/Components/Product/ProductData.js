@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createProduct, getAllProduct, updateProduct, getByProductId, deleteProduct } from '../apiCall'
+import { createProduct, getAllProduct, updateProduct, getByProductId, deleteProduct, getAllBrand, getAllCategory, getAllColor, getAllImage, getAllSize, getAllUser } from '../apiCall'
 
 class ProductData extends Component {
     state = {
@@ -16,7 +16,13 @@ class ProductData extends Component {
         productImageId: null,
         error: null,
         errors: [],
-        products: []
+        products: [],
+        brands: [],
+        sizes: [],
+        categories: [],
+        colors: [],
+        users: [],
+        images: []
     };
 
     onChange = event => {
@@ -57,7 +63,57 @@ class ProductData extends Component {
 
     componentDidMount() {
         this.getAllProductForTable();
+        this.getAllBrandsForTable();
+        this.getAllCategoriesForTable();
+        this.getAllColorsForTable();
+        this.getAllImagesForTable();
+        this.getAllSizesForTable();
+        this.getAllUsersForTable();
     };
+
+    getAllBrandsForTable() {
+        getAllBrand().then(response => {
+            this.setState({
+                brands: response.data.data
+            })
+        })
+    }
+    getAllSizesForTable() {
+        getAllSize().then(response => {
+            this.setState({
+                sizes: response.data.data
+            })
+        })
+    }
+    getAllColorsForTable() {
+        getAllColor().then(response => {
+            this.setState({
+                colors: response.data.data
+            })
+        })
+    }
+    getAllCategoriesForTable() {
+        getAllCategory().then(response => {
+            this.setState({
+                categories: response.data.data
+            })
+        })
+    }
+    getAllUsersForTable() {
+        getAllUser().then(response => {
+            this.setState({
+                users: response.data.data
+            })
+        })
+    }
+    getAllImagesForTable() {
+        getAllImage().then(response => {
+            this.setState({
+                images: response.data.data
+            })
+        })
+    }
+
 
     getAllProductForTable() {
         getAllProduct().then(response => {
@@ -153,7 +209,7 @@ class ProductData extends Component {
 
     render() {
 
-        const { products, productId, productTitle, productDescription, productPrice, productDiscountPrice, brandId,
+        const { users, brands, categories, colors, images, sizes, products, productId, productTitle, productDescription, productPrice, productDiscountPrice, brandId,
             sizeId, categoryId, colorId, userId, productImageId, error } = this.state;
         return (
             <>
@@ -182,39 +238,75 @@ class ProductData extends Component {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Marka Id</label>
+                    <label className="col-sm-3 control-label">Marka </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={brandId != null ? brandId : ''} defaultValue={brandId} name="brandId" onChange={this.onChange} type="number" />
+
+
+                        <select className="form-control" value={brandId != null ? brandId : ''} defaultValue={brandId} name="brandId" onChange={this.onChange} >
+                            <option value="0">Marka Seçilmedi</option>
+
+                            {brands.map((brand) => (
+                                <option value={brand.brandId}>{brand.brandId}{" "} -{" "}{brand.brandName}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Beden Id</label>
+                    <label className="col-sm-3 control-label">Beden </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={sizeId != null ? sizeId : ''} defaultValue={sizeId} name="sizeId" onChange={this.onChange} type="number" />
+                        <select className="form-control" value={sizeId != null ? sizeId : ''} defaultValue={sizeId} name="sizeId" onChange={this.onChange} >
+                            <option value="0">Beden Seçilmedi</option>
+                            {sizes.map((size) => (
+                                <option value={size.sizeId}>{size.sizeId}{" "} -{" "}{size.sizeName}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Kategori Id</label>
+                    <label className="col-sm-3 control-label">Kategori </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={categoryId != null ? categoryId : ''} defaultValue={categoryId} name="categoryId" onChange={this.onChange} type="number" />
+
+                        <select className="form-control" value={categoryId != null ? categoryId : ''} defaultValue={categoryId} name="categoryId" onChange={this.onChange} >
+                            <option value="0">Kategori Seçilmedi</option>
+                            {categories.map((category) => (
+                                <option value={category.categoryId}>{category.categoryId}{" "} -{" "}{category.categoryName}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Renk Id</label>
+                    <label className="col-sm-3 control-label">Renk </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={colorId != null ? colorId : ''} defaultValue={colorId} name="colorId" onChange={this.onChange} type="number" />
+                        <select className="form-control" value={colorId != null ? colorId : ''} defaultValue={colorId} name="colorId" onChange={this.onChange} >
+                            <option value="0">Renk Seçilmedi</option>
+                            {colors.map((color) => (
+                                <option value={color.colorId}>{color.colorId}{" "} -{" "}{color.colorName}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Kullanıcı Id</label>
+                    <label className="col-sm-3 control-label">Kullanıcı </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={userId != null ? userId : ''} defaultValue={userId} name="userId" onChange={this.onChange} type="number" />
+                        <select className="form-control" value={userId != null ? userId : ''} defaultValue={userId} name="userId" onChange={this.onChange} >
+                            <option value="0">Kullanıcı Seçilmedi</option>
+                            {users.map((user) => (
+                                <option value={user.userId}>{user.userId}{" "} -{" "}{user.userName}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Ürün Resmi Id</label>
+                    <label className="col-sm-3 control-label">Ürün Resmi </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={productImageId != null ? productImageId : ''} defaultValue={productImageId} name="productImageId" onChange={this.onChange} type="number" />
+
+                        <select className="form-control" value={productImageId != null ? productImageId : ''} defaultValue={productImageId} name="productImageId" onChange={this.onChange} >
+                            <option value="0">Ürün Resmi Seçilmedi</option>
+                            {images.map((image) => (
+                                <option value={image.imageId}>{image.imageId}{" "} -{" "}{image.imageSubInfo}</option>
+                            ))}
+
+                        </select>
                     </div>
                 </div>
                 <div className="form-group">

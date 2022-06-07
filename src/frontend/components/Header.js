@@ -1,9 +1,109 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
+import { getCategoryByParentId } from '../../admin/Components/apiCall';
+import { Authentication } from '../shared/AuthenticationContext';
+import { connect } from 'react-redux'
+
+import { logoutSuccess } from '../redux/authActions';
 
 class header extends Component {
+
+    //static contextType = Authentication;
+    state = {
+        categoryGiyim: [],
+        categoryAksesuar: [],
+        categoryAyakkabi: []
+
+    }
+
+
+    componentDidMount() {
+        this.getcategoryByGiyim();
+        this.getcategoryByAyakkabi();
+        this.getcategoryByAksesuar();
+    }
+
+    getcategoryByGiyim() {
+        getCategoryByParentId(1).then(response => {
+            this.setState({
+                categoryGiyim: response.data.data
+            })
+        })
+    }
+    getcategoryByAksesuar() {
+        getCategoryByParentId(4).then(response => {
+            this.setState({
+                categoryAksesuar: response.data.data
+            })
+        })
+    }
+    getcategoryByAyakkabi() {
+        getCategoryByParentId(3).then(response => {
+            this.setState({
+                categoryAyakkabi: response.data.data
+            })
+        })
+    }
+
+    /*onClickLogout = () => {
+        this.props.dispatch(logoutSuccess());
+    };*/
+
+
     render() {
+
+        const { userSeller, isLoggedIn, userName, onLogoutSuccess, userFirstName, userLastName, profileImage_imageUrl } = this.props;
+        const { categoryAksesuar, categoryAyakkabi, categoryGiyim } = this.state;
+
+        let links = (
+            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <ul className="profile-notification">
+                    <li><Link className="apply-now-btn" to="/login/" id="login-button">Giriş</Link></li>
+                    <li><Link className="apply-now-btn-color hidden-on-mobile" to="/register/">Kayıt Ol</Link></li>
+                </ul>
+            </div>
+        );
+        if (isLoggedIn) {
+            links = (
+                <div className="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                    <ul className="profile-notification">
+                        <li>
+                            <div class="user-account-info">
+                                <div class="user-account-info-controler">
+                                    <div class="user-account-img">
+                                        <img class="img-responsive" src={profileImage_imageUrl} alt="profile" />
+                                    </div>
+                                    <div class="user-account-title">
+                                        <div class="user-account-name">{userFirstName} {userLastName}</div>
+
+                                    </div>
+                                    <div class="user-account-dropdown">
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <Link to={`/userprofile/${userName}`}>Profil Sayfası</Link>
+
+                                    </li>
+                                    <li><Link to="/uploadproduct/">Ürünler</Link></li>
+                                    <li><Link to="/editprofile/">Hesap Ayarları</Link></li>
+                                    <li><Link to="/useradress/">Adreslerim</Link></li>
+                                    {
+                                        userSeller == "Admin" && <li><Link to="/adminpage/">Admin Ayarları</Link></li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </li>
+                        <li><Link className="apply-now-btn" onClick={onLogoutSuccess} >Çıkış Yap</Link></li>
+
+                    </ul>
+                </div>
+            );
+        }
         return (
+
 
             <header>
                 <div id="header2" className="header2-area right-nav-mobile">
@@ -15,263 +115,78 @@ class header extends Component {
                                         <a href="index.htm"><img className="img-responsive" src="asset/img\logo.png" alt="logo" /></a>
                                     </div>
                                 </div>
-                                <div className="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                    <ul className="profile-notification">
-                                        <li>
-                                            <div className="notify-contact"><span>Need help?</span> Talk to an expert: +61 3 8376 6284</div>
-                                        </li>
-                                        <li>
-                                            <div className="cart-area">
-                                                <a href="/"><i className="fa fa-shopping-cart" aria-hidden="true"></i><span>2</span></a>
-                                                <ul>
-                                                    <li>
-                                                        <div className="cart-single-product">
-                                                            <div className="media">
-                                                                <div className="pull-left cart-product-img">
-                                                                    <a href="/">
-                                                                        <img className="img-responsive" alt="product" src="asset/img\product\more2.jpg" />
-                                                                    </a>
-                                                                </div>
-                                                                <div className="media-body cart-content">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <h1><a href="/">Product Title Here</a></h1>
-                                                                            <h2><span>Code:</span> STPT600</h2>
-                                                                        </li>
-                                                                        <li>
-                                                                            <p>X 1</p>
-                                                                        </li>
-                                                                        <li>
-                                                                            <p>$49</p>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a className="trash" href="/"><i className="fa fa-trash-o"></i></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div className="cart-single-product">
-                                                            <div className="media">
-                                                                <div className="pull-left cart-product-img">
-                                                                    <a href="/">
-                                                                        <img className="img-responsive" alt="product" src="asset/img\product\more3.jpg" />
-                                                                    </a>
-                                                                </div>
-                                                                <div className="media-body cart-content">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <h1><a href="/">Product Title Here</a></h1>
-                                                                            <h2><span>Code:</span> STPT460</h2>
-                                                                        </li>
-                                                                        <li>
-                                                                            <p>X 1</p>
-                                                                        </li>
-                                                                        <li>
-                                                                            <p>$75</p>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a className="trash" href="/"><i className="fa fa-trash-o"></i></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <table className="table table-bordered sub-total-area">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>Total</td>
-                                                                    <td>$124</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Discount</td>
-                                                                    <td>$30</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Vat(20%)</td>
-                                                                    <td>$18.8</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Sub Total</td>
-                                                                    <td>$112.8</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </li>
-                                                    <li>
-                                                        <ul className="cart-checkout-btn">
-                                                            <li><a href="cart.htm" className="btn-find"><i className="fa fa-shopping-cart" aria-hidden="true"></i>Go to Cart</a></li>
-                                                            <li><a href="check-out.htm" className="btn-find"><i className="fa fa-share" aria-hidden="true"></i>Go to Checkout</a></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            { /*<div className="apply-btn-area">
-                                                    <a className="apply-now-btn" href="/" id="login-button">Login</a>
-                                                    <div className="login-form" id="login-form" style="display: none;">
-                                                        <h2>Login</h2>
-                                                       <form>
-                                                            <input className="form-control" type="text" placeholder="Name">
-                                                                <input className="form-control" type="password" placeholder="Password">
-                                                                    <button className="btn-login" type="submit" value="Login">Login</button>
-                                                                    <a className="btn-login" href="registration.htm">Registration</a>
-                                                                    <div className="remember-lost">
-                                                                        <div className="checkbox">
-                                                                            <label><input type="checkbox"> Remember me</label>
-                                                                        </div>
-                                                                        <a className="lost-password" href="/">Lost Your Password?</a>
-                                                                    </div>
-                                                                    <button className="cross-btn form-cancel" type="submit" value=""><i className="fa fa-times" aria-hidden="true"></i></button>
-                                                      </form> 
-                                                    </div>
-                                                </div>*/}
-                                        </li>
-                                        <li><a className="apply-now-btn-color hidden-on-mobile" href="registration.htm">Register</a></li>
-                                    </ul>
-                                </div>
+                                {links}
                             </div>
                         </div>
                     </div>
+
                     <div className="main-menu-area bg-primaryText" id="sticker">
                         <div className="container">
                             <nav id="desktop-nav">
                                 <ul>
-                                    <li className="active"><a href="/">Home</a>
-                                        <ul>
-                                            <li><a href="index.htm">Home 1</a></li>
-                                            <li><a href="index2.htm">Home 2</a></li>
-                                        </ul>
+                                    <li className="active"><a href="/">Anasayfa</a>
+
                                     </li>
-                                    <li><a href="about.htm">About</a></li>
-                                    <li><a href="/">Pages</a>
+                                    <li><Link to="/aboutus/">Hakkımızda</Link></li>
+                                    <li><Link to="/productcategorylist/0">Kategoriler</Link>
                                         <ul className="mega-menu-area">
                                             <li>
-                                                <a href="index.htm">Home 1</a>
-                                                <a href="index2.htm">Home 2</a>
-                                                <a href="about.htm">About</a>
-                                                <a href="product-page-grid.htm">Product Grid</a>
+                                                <Link to="/productcategorylist/1">Giyim</Link>
+                                                {categoryGiyim.map((category) => (<Link to={"/productcategorylist/" + category.categoryId}>{category.categoryName}</Link>))}
                                             </li>
                                             <li>
-                                                <a href="product-page-list.htm">Product List</a>
-                                                <a href="product-category-grid.htm">Category Grid</a>
-                                                <a href="product-category-list.htm">Category List</a>
-                                                <a href="single-product.htm">Product Details</a>
+                                                <Link to="/productcategorylist/4">Aksesuar</Link>
+                                                {categoryAksesuar.map((category) => (<Link to={"/productcategorylist/" + category.categoryId}>{category.categoryName}</Link>))}
                                             </li>
                                             <li>
-                                                <a href="profile.htm">Profile</a>
-                                                <a href="favourites-grid.htm">Favourites Grid</a>
-                                                <a href="favourites-list.htm">Favourites List</a>
-                                                <a href="settings.htm">Settings</a>
+                                                <Link to="/productcategorylist/3">Ayakkabı</Link>
+                                                {categoryAyakkabi.map((category) => (<Link to={"/productcategorylist/" + category.categoryId}>{category.categoryName}</Link>))}
                                             </li>
-                                            <li>
-                                                <a href="upload-products.htm">Upload Products</a>
-                                                <a href="sales-statement.htm">Sales Statement</a>
-                                                <a href="withdrawals.htm">Withdrawals</a>
-                                                <a href="404.htm">404</a>
-                                            </li>
+
                                         </ul>
                                     </li>
-                                    <li><a href="product-page-grid.htm">WordPress</a></li>
-                                    <li><a href="product-category-grid.htm">Joomla</a></li>
-                                    <li><a href="product-category-list.htm">Plugins</a></li>
-                                    <li><a href="product-page-list.htm">Components</a></li>
-                                    <li><a href="product-category-grid.htm">PSD</a></li>
-                                    <li><a href="/">Blog</a>
-                                        <ul>
-                                            <li><a href="blog.htm">Blog</a></li>
-                                            <li><a href="single-blog.htm">Blog Details</a></li>
-                                            <li className="has-child-menu"><a href="/">Second Level</a>
-                                                <ul className="thired-level">
-                                                    <li><a href="index.htm">Thired Level 1</a></li>
-                                                    <li><a href="index.htm">Thired Level 2</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contact.htm">Contact</a></li>
-                                    <li><Link to="/adminpage">Admin page</Link></li>
+
+
+                                    <li><Link to="/productlist">Ürün Listesi</Link></li>
+                                    <li><Link to="/productcategorylist/0">Kategori Listesi</Link></li>
                                 </ul>
                             </nav>
                         </div>
                     </div>
+
                 </div>
-                <div className="mobile-menu-area">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className="mobile-menu">
-                                    <nav id="dropdown">
-                                        <ul>
-                                            <li className="active"><a href="/">Home</a>
-                                                <ul>
-                                                    <li><a href="index.htm">Home 1</a></li>
-                                                    <li><a href="index2.htm">Home 2</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="about.htm">About</a></li>
-                                            <li><a href="/">Pages</a>
-                                                <ul className="mega-menu-area">
-                                                    <li>
-                                                        <a href="index.htm">Home 1</a>
-                                                        <a href="index2.htm">Home 2</a>
-                                                        <a href="about.htm">About</a>
-                                                        <a href="product-page-grid.htm">Product Grid</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="product-page-list.htm">Product List</a>
-                                                        <a href="product-category-grid.htm">Category Grid</a>
-                                                        <a href="product-category-list.htm">Category List</a>
-                                                        <a href="single-product.htm">Product Details</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="profile.htm">Profile</a>
-                                                        <a href="favourites-grid.htm">Favourites Grid</a>
-                                                        <a href="favourites-list.htm">Favourites List</a>
-                                                        <a href="settings.htm">Settings</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="upload-products.htm">Upload Products</a>
-                                                        <a href="sales-statement.htm">Sales Statement</a>
-                                                        <a href="withdrawals.htm">Withdrawals</a>
-                                                        <a href="404.htm">404</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="product-page-grid.htm">WordPress</a></li>
-                                            <li><a href="product-category-grid.htm">Joomla</a></li>
-                                            <li><a href="product-category-list.htm">Plugins</a></li>
-                                            <li><a href="product-page-list.htm">Components</a></li>
-                                            <li><a href="product-category-grid.htm">PSD</a></li>
-                                            <li><a href="/">Blog</a>
-                                                <ul>
-                                                    <li><a href="blog.htm">Blog</a></li>
-                                                    <li><a href="single-blog.htm">Blog Details</a></li>
-                                                    <li className="has-child-menu"><a href="/">Second Level</a>
-                                                        <ul className="thired-level">
-                                                            <li><a href="index.htm">Thired Level 1</a></li>
-                                                            <li><a href="index.htm">Thired Level 2</a></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="contact.htm">Contact</a></li>
-                                            <li><a href="help.htm">Help</a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+
             </header>
 
         )
+
+
     }
 }
-export default header;
+
+const mapStateToProps = (store) => {
+    return {
+        isLoggedIn: store.isLoggedIn,
+        userName: store.userName,
+        userFirstName: store.userFirstName,
+        userLastName: store.userLastName,
+        userPassword: store.userPassword,
+        userMail: store.userMail,
+        userCountry: store.userCountry,
+        userRegisterDate: store.userRegisterDate,
+        userAbout: store.userAbout,
+        userSeller: store.userSeller,
+        coverImage_imageUrl: store.coverImage_imageUrl,
+        profileImage_imageUrl: store.profileImage_imageUrl,
+    }
+}
+
+const mapDisptchToProps = (dispatch) => {
+    return {
+        onLogoutSuccess: () => dispatch(logoutSuccess())
+
+    };
+};
+
+export default connect(mapStateToProps, mapDisptchToProps)(header);

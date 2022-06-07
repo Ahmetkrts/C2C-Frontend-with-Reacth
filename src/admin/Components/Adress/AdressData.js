@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createAdress, getAllAdress, updateAdress, getByAdressId, deleteAdress } from '../apiCall'
+import { getAllUser, createAdress, getAllAdress, updateAdress, getByAdressId, deleteAdress } from '../apiCall'
 
 class AdressData extends Component {
     state = {
@@ -17,7 +17,8 @@ class AdressData extends Component {
         userId: null,
         error: null,
         errors: [],
-        adresss: []
+        adresss: [],
+        users: []
     };
 
     onChange = event => {
@@ -61,7 +62,15 @@ class AdressData extends Component {
 
     componentDidMount() {
         this.getAllAdressForTable();
+        this.getAllUsersForTable();
     };
+    getAllUsersForTable() {
+        getAllUser().then(response => {
+            this.setState({
+                users: response.data.data
+            })
+        })
+    }
 
     getAllAdressForTable() {
         getAllAdress().then(response => {
@@ -155,7 +164,7 @@ class AdressData extends Component {
 
     render() {
 
-        const { adresss, addressId, addressTitle, addressFirstName, addressLastName, addressMail, addressPhoneNumber, addressProvince, addressCounty, addressDistrict,
+        const { users, adresss, addressId, addressTitle, addressFirstName, addressLastName, addressMail, addressPhoneNumber, addressProvince, addressCounty, addressDistrict,
             addressPostCode, addressFullAdress, userId, error } = this.state;
         return (
             <>
@@ -222,9 +231,15 @@ class AdressData extends Component {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Kullanıcı Id</label>
+                    <label className="col-sm-3 control-label">Kullanıcı </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={userId != null ? userId : ''} defaultValue={userId} name="userId" onChange={this.onChange} />
+                        <select className="form-control" value={userId != null ? userId : ''} defaultValue={userId} name="userId" onChange={this.onChange} >
+                            <option value="0">Kullanıcı Seçilmedi</option>
+                            {users.map((user) => (
+                                <option value={user.userId}>{user.userId}{" "} -{" "}{user.userName}</option>
+                            ))}
+                        </select>
+
                     </div>
                 </div>
 

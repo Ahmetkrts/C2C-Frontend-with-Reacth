@@ -120,11 +120,25 @@ class CategoryDataTable extends Component {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Üst Kategori İd</label>
+                    <label className="col-sm-3 control-label">Üst Kategori </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={categoryParentId != null ? categoryParentId : ''} defaultValue={categoryParentId} name="categoryParentId" onChange={this.onChange} type="number" />
+
+                        <select value={categoryParentId != null ? categoryParentId : ''} defaultValue={categoryParentId} name="categoryParentId" onChange={this.onChange} className="form-control text-success">
+                            <option value="0">Kategori Seçilmedi</option>
+
+                            {categories.map((category) => (
+                                <option value={category.categoryId}>{category.categoryName}</option>
+                            ))}
+
+
+                        </select>
+
+
                     </div>
                 </div>
+
+
+
                 <div className="form-group">
                     <label className="col-sm-3 control-label"></label>
                     <div className="col-sm-9">

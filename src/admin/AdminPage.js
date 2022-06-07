@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import Header from '../frontend/components/Header';
-import Footer from '../frontend/components/Footer';
+
 import CategoryData from './Components/Category/CategoryData';
 import ImageData from './Components/Image/ImageData';
 import UserData from './Components/User/UserData';
@@ -16,7 +15,7 @@ class AdminPage extends Component {
         return (
 
             <div>
-                <Header />
+                
                 <div className="pagination-area bg-secondary">
                     <div className="container">
                         <div className="pagination-wrapper">
@@ -118,7 +117,7 @@ class AdminPage extends Component {
                         </div>
                     </div>
                 </div>
-                <Footer />
+                
 
             </div>
         )

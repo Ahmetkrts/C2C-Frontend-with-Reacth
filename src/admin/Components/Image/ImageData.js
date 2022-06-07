@@ -5,10 +5,11 @@ class ImageData extends Component {
     state = {
         imageId: null,
         imageSubInfo: null,
-        imageUrl: null,
+
         error: null,
         errors: [],
-        images: []
+        images: [],
+        file: null
     };
 
     onChange = event => {
@@ -17,16 +18,26 @@ class ImageData extends Component {
             [name]: value
         });
     };
+    handleFile(e) {
+        let file = e.target.files[0]
+        this.setState({ file: file })
+    }
     onClickSave = async event => {
         event.preventDefault();
 
-        const body = {
-            imageSubInfo: this.state.imageSubInfo,
-            imageUrl: this.state.imageUrl
-        };
+        let file = this.state.file
+        let body = new FormData()
+
+        body.append('file', file)
+        body.append('imageSubInfo', this.state.imageSubInfo)
+        body.append('imageUrl', "imageUrl")
+
+
+
 
         try {
             const response = await createImage(body);
+           
         } catch (error) {
             this.setState({ errors: error.response.data.data })
             { error.response.data.message != "Validation Errors" && this.setState({ error: error.response.data.data }) }
@@ -54,20 +65,27 @@ class ImageData extends Component {
 
     updateImage = async image => {
         const response = await getByImageId(image.imageId);
+
         this.setState({
             imageId: image.imageId,
-            imageSubInfo: image.imageSubInfo,
-            imageUrl: image.imageUrl
+            imageSubInfo: image.imageSubInfo
+
+
         })
     };
 
     onClickUpdate = async event => {
         event.preventDefault();
-        const body = {
-            imageId: this.state.imageId,
-            imageSubInfo: this.state.imageSubInfo,
-            imageUrl: this.state.imageUrl
-        };
+
+        let file = this.state.file
+        let body = new FormData()
+
+        body.append('imageId', this.state.imageId)
+        body.append('file', file)
+        body.append('imageSubInfo', this.state.imageSubInfo)
+        body.append('imageUrl', "imageUrl")
+
+
 
         this.setState({ error: null })
         try {
@@ -100,7 +118,8 @@ class ImageData extends Component {
         this.setState({
             imageId: null,
             imageSubInfo: null,
-            imageUrl: null,
+
+            file: null,
             pendingCallApi: false
         })
         this.render();
@@ -108,7 +127,7 @@ class ImageData extends Component {
 
     render() {
 
-        const { images, imageId, imageSubInfo, imageUrl, error, errors } = this.state;
+        const { file, images, imageId, imageSubInfo, error, errors } = this.state;
         return (
             <>
                 <div className="form-group">
@@ -118,9 +137,9 @@ class ImageData extends Component {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Resim Url</label>
+                    <label className="col-sm-3 control-label">Resim Seç</label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={imageUrl != null ? imageUrl : ''} defaultValue={imageUrl} name="imageUrl" onChange={this.onChange} />
+                        <input type="file" className="form-control" name="file" onChange={(e) => this.handleFile(e)} />
                     </div>
                 </div>
                 <div className="form-group">

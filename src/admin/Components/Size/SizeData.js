@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createSize, getAllSize, updateSize, getBySizeId, deleteSize } from '../apiCall'
+import { getAllCategory, createSize, getAllSize, updateSize, getBySizeId, deleteSize } from '../apiCall'
 
 class SizeData extends Component {
     state = {
@@ -8,7 +8,8 @@ class SizeData extends Component {
         categoryId: null,
         error: null,
         errors: [],
-        sizes: []
+        sizes: [],
+        categories: []
     };
 
     onChange = event => {
@@ -40,7 +41,15 @@ class SizeData extends Component {
 
     componentDidMount() {
         this.getAllSizeForTable();
+        this.getAllCategoriesForTable();
     };
+    getAllCategoriesForTable() {
+        getAllCategory().then(response => {
+            this.setState({
+                categories: response.data.data
+            })
+        })
+    }
 
     getAllSizeForTable() {
         getAllSize().then(response => {
@@ -108,7 +117,7 @@ class SizeData extends Component {
 
     render() {
 
-        const { sizes, sizeId, sizeName, categoryId, error, } = this.state;
+        const { categories, sizes, sizeId, sizeName, categoryId, error, } = this.state;
         return (
             <>
                 <div className="form-group">
@@ -118,10 +127,14 @@ class SizeData extends Component {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Kategori İd</label>
+                    <label className="col-sm-3 control-label">Kategori </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={categoryId != null ? categoryId : ''} defaultValue={categoryId} name="categoryId" onChange={this.onChange} type="number" />
-                    </div>
+                        <select className="form-control" value={categoryId != null ? categoryId : ''} defaultValue={categoryId} name="categoryId" onChange={this.onChange} >
+                            <option value="0">Kategori Seçilmedi</option>
+                            {categories.map((category) => (
+                                <option value={category.categoryId}>{category.categoryId}{" "} -{" "}{category.categoryName}</option>
+                            ))}
+                        </select> </div>
                 </div>
                 <div className="form-group">
                     <label className="col-sm-3 control-label"></label>

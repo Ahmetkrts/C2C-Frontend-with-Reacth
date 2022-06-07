@@ -13,6 +13,15 @@ export const getByCategoryId = (categoryId) => {
     return axios.get("/api/Categories/getByCategoryId?categoryId=" + categoryId);
 }
 
+export const getCategoryByParentId = (parentId) => {
+    parentId = parseInt(parentId);
+    return axios.get("/api/Categories/getCategoryByParentId?parentId=" + parentId);
+}
+
+
+
+
+
 export const updateCategory = (body) => {
     return axios.put("/api/Categories/update", body);
 }
@@ -64,6 +73,10 @@ export const getAllUser = () => {
 export const getByUserId = (userId) => {
     userId = parseInt(userId);
     return axios.get("/api/Users/getByUserId?userId=" + userId);
+}
+
+export const getByUserName = (userName) => {
+    return axios.get("/api/Users/getByUserName?userName=" + userName);
 }
 
 export const updateUser = (body) => {
@@ -120,6 +133,7 @@ export const getByBrandId = (brandId) => {
     return axios.get("/api/Brands/getByBrandId?brandId=" + brandId);
 }
 
+
 export const updateBrand = (body) => {
     return axios.put("/api/Brands/update", body);
 }
@@ -142,9 +156,17 @@ export const createAdress = (body) => {
 export const getAllAdress = () => {
     return axios.get("/api/Addresss/getAll");
 }
+
+
+
 export const getByAdressId = (adressId) => {
     adressId = parseInt(adressId);
     return axios.get("/api/Addresss/getByAddressId?addressId=" + adressId);
+}
+
+export const getAddressByUserId = (userId) => {
+    userId = parseInt(userId);
+    return axios.get("/api/Addresss/getAddressListByUserId?userId=" + userId);
 }
 
 export const updateAdress = (body) => {
@@ -201,6 +223,75 @@ export const getByProductId = (productId) => {
     return axios.get("/api/Products/getByProductId?productId=" + productId);
 }
 
+export const getSinglePageByProductId = (productId) => {
+    productId = parseInt(productId);
+    return axios.get("/api/Products/getSinglePageByProductId?productId=" + productId);
+}
+
+export const getAllPagedProductByPageNoAndPageSize = (pageNo, pageSize, sortTitle, sort) => {
+    pageNo = parseInt(pageNo);
+    pageSize = parseInt(pageSize);
+
+    return axios.get("/api/Products/getAllPaged?pageNo=" + pageNo + "&pageSize=" + pageSize + "&sortTitle=" + sortTitle + "&sort=" + sort);
+}
+
+export const getAllPagedProductByPageNoAndPageSizeByUserId = (pageNo, pageSize, sortTitle, sort, userId) => {
+    pageNo = parseInt(pageNo);
+    pageSize = parseInt(pageSize);
+    userId = parseInt(userId);
+
+    return axios.get("/api/Products/getProductByUserId?pageNo=" + pageNo + "&pageSize=" + pageSize + "&sortTitle=" + sortTitle + "&sort=" + sort + "&userId=" + userId);
+}
+
+export const getAllPagedProductByPageNoAndPageSizeByCategoryId = (pageNo, pageSize, sortTitle, sort, categoryId) => {
+    pageNo = parseInt(pageNo);
+    pageSize = parseInt(pageSize);
+    categoryId = parseInt(categoryId);
+
+    return axios.get("/api/Products/getProductByCategoryId?pageNo=" + pageNo + "&pageSize=" + pageSize + "&sortTitle=" + sortTitle + "&sort=" + sort + "&categoryId=" + categoryId);
+}
+export const getAllPagedProductByPageNoAndPageSizeByBrandId = (pageNo, pageSize, sortTitle, sort, brandId) => {
+    pageNo = parseInt(pageNo);
+    pageSize = parseInt(pageSize);
+    brandId = parseInt(brandId);
+
+    return axios.get("/api/Products/getProductByBrandId?pageNo=" + pageNo + "&pageSize=" + pageSize + "&sortTitle=" + sortTitle + "&sort=" + sort + "&brandId=" + brandId);
+}
+export const getAllPagedProductByPageNoAndPageSizeByColorId = (pageNo, pageSize, sortTitle, sort, ColorId) => {
+    pageNo = parseInt(pageNo);
+    pageSize = parseInt(pageSize);
+    ColorId = parseInt(ColorId);
+
+    return axios.get("/api/Products/getProductByColorId?pageNo=" + pageNo + "&pageSize=" + pageSize + "&sortTitle=" + sortTitle + "&sort=" + sort + "&colorId=" + ColorId);
+}
+export const getAllPagedProductByPageNoAndPageSizeBySizeId = (pageNo, pageSize, sortTitle, sort, SizeId) => {
+    pageNo = parseInt(pageNo);
+    pageSize = parseInt(pageSize);
+    SizeId = parseInt(SizeId);
+
+    return axios.get("/api/Products/getProductBySizeId?pageNo=" + pageNo + "&pageSize=" + pageSize + "&sortTitle=" + sortTitle + "&sort=" + sort + "&sizeId=" + SizeId);
+}
+
+export const getProductByCategoryList = () => {
+    return axios.get("/api/Products/getProductByCategoryList");
+}
+
+export const getProductCategoryList = () => {
+    return axios.get("/api/Products/getProductCategoryList");
+}
+export const getProductBrandList = () => {
+    return axios.get("/api/Products/getProductBrandList");
+}
+export const getProductColorList = () => {
+    return axios.get("/api/Products/getProductColorList");
+}
+export const getProductSizeList = () => {
+    return axios.get("/api/Products/getProductSizeList");
+}
+
+
+
+
 export const updateProduct = (body) => {
     return axios.put("/api/Products/update", body);
 }
@@ -227,6 +318,11 @@ export const getByCommentId = (commentId) => {
     return axios.get("/api/Comments/getByCommentId?commentId=" + commentId);
 }
 
+export const getAllCommentsByProductId = (productId) => {
+    productId = parseInt(productId);
+    return axios.get("/api/Comments/getCommentByProductId?productId=" + productId);
+}
+
 export const updateComment = (body) => {
     return axios.put("/api/Comments/update", body);
 }
@@ -239,5 +335,13 @@ export const deleteComment = (commentId) => {
     });
 }
 //Comments End
+
+
+//Auth Start
+export const login = (creds) => {
+    return axios.post("/api/Auth/login", {}, { auth: creds });
+}
+
+//Auth End
 
 

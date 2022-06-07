@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createComment, getAllComment, updateComment, getByCommentId, deleteComment } from '../apiCall'
+import { getAllProduct, getAllUser, createComment, getAllComment, updateComment, getByCommentId, deleteComment } from '../apiCall'
 
 class CommentData extends Component {
     state = {
@@ -13,7 +13,9 @@ class CommentData extends Component {
         productId: null,
         error: null,
         errors: [],
-        comments: []
+        comments: [],
+        products: [],
+        users: []
     };
 
     onChange = event => {
@@ -51,7 +53,25 @@ class CommentData extends Component {
 
     componentDidMount() {
         this.getAllCommentForTable();
+        this.getAllProductForTable();
+        this.getAllUsersForTable();
     };
+
+    getAllUsersForTable() {
+        getAllUser().then(response => {
+            this.setState({
+                users: response.data.data
+            })
+        })
+    }
+    getAllProductForTable() {
+        getAllProduct().then(response => {
+            this.setState({
+                products: response.data.data
+
+            });
+        });
+    }
 
     getAllCommentForTable() {
         getAllComment().then(response => {
@@ -134,7 +154,7 @@ class CommentData extends Component {
 
     render() {
 
-        const { comments, commentId, commentTitle, commentContent, commentCreateDate, commentScore,
+        const { products, users, comments, commentId, commentTitle, commentContent, commentCreateDate, commentScore,
             parent_CommentId, userId, productId, error } = this.state;
         return (
             <>
@@ -159,21 +179,35 @@ class CommentData extends Component {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Üst Yorum Id</label>
+                    <label className="col-sm-3 control-label">Üst Yorum </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={parent_CommentId != null ? parent_CommentId : ''} defaultValue={parent_CommentId} name="parent_CommentId" onChange={this.onChange} />
+                        <select className="form-control" value={parent_CommentId != null ? parent_CommentId : ''} defaultValue={parent_CommentId} name="parent_CommentId" onChange={this.onChange} >
+                            <option value="0">Üst Yorum Seçilmedi</option>
+                            {comments.map((comment) => (
+                                <option value={comment.commentId}>{comment.commentId}{" "} -{" "}{comment.commentTitle}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Kullanıcı Id</label>
+                    <label className="col-sm-3 control-label">Kullanıcı </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={userId != null ? userId : ''} defaultValue={userId} name="userId" onChange={this.onChange} />
-                    </div>
+                        <select className="form-control" value={userId != null ? userId : ''} defaultValue={userId} name="userId" onChange={this.onChange} >
+                            <option value="0">Kullanıcı Seçilmedi</option>
+                            {users.map((user) => (
+                                <option value={user.userId}>{user.userId}{" "} -{" "}{user.userName}</option>
+                            ))}
+                        </select></div>
                 </div>
                 <div className="form-group">
-                    <label className="col-sm-3 control-label">Ürün Id</label>
+                    <label className="col-sm-3 control-label">Ürün </label>
                     <div className="col-sm-9">
-                        <input className="form-control" value={productId != null ? productId : ''} defaultValue={productId} name="productId" onChange={this.onChange} />
+                        <select className="form-control" value={productId != null ? productId : ''} defaultValue={productId} name="productId" onChange={this.onChange} >
+                            <option value="0">Ürün Seçilmedi</option>
+                            {products.map((product) => (
+                                <option value={product.productId}>{product.productId}{" "} -{" "}{product.productTitle.substring(0, 20)}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
