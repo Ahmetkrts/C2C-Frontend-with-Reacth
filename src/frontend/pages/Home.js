@@ -34,17 +34,7 @@ class Home extends Component {
         })
 
 
-
-
-
-
     }
-
-
-
-
-
-
 
     render() {
         const { categories, products } = this.state;

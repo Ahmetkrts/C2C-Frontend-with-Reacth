@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import dateFormat, { masks } from "dateformat";
+
+import { Link } from 'react-router-dom';
 import { getByProductId, getSinglePageByProductId, getAllCommentsByProductId, createComment } from '../../admin/Components/apiCall'
 
 class SingleProduct extends Component {
@@ -168,10 +170,10 @@ class SingleProduct extends Component {
                                                                 </div>
                                                                 <div className="form-group col-xs-12 col-sm-9 col-lg-10">
 
-                                                                    <input className="form-control" value={commentTitle != null ? commentTitle : ''} defaultValue={commentTitle} name="commentTitle" onChange={this.onChange} />
+                                                                    <input placeholder="Yorum Başlığı Giriniz..." className="form-control" value={commentTitle != null ? commentTitle : ''} defaultValue={commentTitle} name="commentTitle" onChange={this.onChange} />
                                                                     <br />
 
-                                                                    <textarea className="form-control" value={commentContent != null ? commentContent : ''} defaultValue={commentContent} name="commentContent" onChange={this.onChange} />
+                                                                    <textarea placeholder="Yorum İçeriği Giriniz..." className="form-control" value={commentContent != null ? commentContent : ''} defaultValue={commentContent} name="commentContent" onChange={this.onChange} />
 
                                                                 </div>
                                                             </div>
@@ -220,7 +222,7 @@ class SingleProduct extends Component {
                                             <h3 className="sidebar-item-title">Ürünün Fiyatı</h3>
 
                                             <ul className="sidebar-product-price">
-                                                <li>${productDiscountPrice}</li>
+                                                <li>₺{productDiscountPrice}</li>
                                                 <li>
                                                     <form id="personal-info-form">
                                                         <div className="custom-select">
@@ -231,7 +233,7 @@ class SingleProduct extends Component {
                                             </ul>
 
                                             <ul className="sidebar-product-btn">
-                                                
+
                                             </ul>
 
                                         </div>
@@ -245,7 +247,8 @@ class SingleProduct extends Component {
                                                 <img src={profileImageImageUrl} alt="product" className="img-responsive" />
                                                 <div className="sidebar-author-content">
                                                     <h3>{userName}</h3>
-                                                    <a href="#" className="view-profile">Profili Görüntüle</a>
+
+                                                    <Link className="view-profile" to={`/userprofile/${userName}`}>Profili Görüntüle</Link>
                                                 </div>
                                             </div>
 

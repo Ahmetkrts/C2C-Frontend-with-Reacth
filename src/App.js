@@ -25,32 +25,54 @@ class App extends React.Component {
 
   render() {
 
-    const { isLoggedIn } = this.props
+    const { isLoggedIn, userSeller } = this.props
     return (
       <div>
         <Router>
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/adminpage" component={AdminPage} />
+
             <Route path="/singleproduct/:id" component={SingleProduct} />
             <Route path="/productlist/" component={productList} />
             <Route path="/productcategorylist/:categoryId" component={productCategoryList} />
             <Route path="/aboutus/" component={AboutUs} />
-            <Route path="/uploadproduct/" component={UploadProduct} />
-            <Route path="/useradress/" component={userAdress} />
+
+
+            <Route path="/userprofile/:username/" component={UserProfile} />
+
 
             {!isLoggedIn &&
               <Route path="/login/" component={Login} />
 
             }
+            {!isLoggedIn &&
+              <Route path="/register/" component={register} />
+
+            }
+
+            {isLoggedIn &&
+              <Route path="/uploadproduct/" component={UploadProduct} />
+
+            }
+
             {isLoggedIn &&
               <Route path="/editprofile/" component={EditProfile} />
 
             }
-            <Route path="/register/" component={register} />
+            {userSeller == "Admin" &&
+              <Route path="/adminpage" component={AdminPage} />
 
-            <Route path="/userprofile/:username/" component={UserProfile} />
+            }
+            {isLoggedIn &&
+
+              <Route path="/useradress/" component={userAdress} />
+
+            }
+
+
+
+
 
 
             <Redirect to="/" />
@@ -67,7 +89,8 @@ class App extends React.Component {
 
 const mapStateToProps = (store) => {
   return {
-    isLoggedIn: store.isLoggedIn
+    isLoggedIn: store.isLoggedIn,
+    userSeller: store.userSeller
 
   }
 }

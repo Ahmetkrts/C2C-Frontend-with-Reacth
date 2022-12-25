@@ -88,7 +88,7 @@ class header extends Component {
                                     </li>
                                     <li><Link to="/uploadproduct/">Ürünler</Link></li>
                                     <li><Link to="/editprofile/">Hesap Ayarları</Link></li>
-                                    <li><Link to="/useradress/">Adreslerim</Link></li>
+                                   
                                     {
                                         userSeller == "Admin" && <li><Link to="/adminpage/">Admin Ayarları</Link></li>
                                     }
@@ -148,7 +148,6 @@ class header extends Component {
 
 
                                     <li><Link to="/productlist">Ürün Listesi</Link></li>
-                                    <li><Link to="/productcategorylist/0">Kategori Listesi</Link></li>
                                 </ul>
                             </nav>
                         </div>

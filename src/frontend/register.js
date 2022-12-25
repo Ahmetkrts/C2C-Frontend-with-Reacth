@@ -137,7 +137,7 @@ class register extends Component {
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label" for="phone">Şifre *</label>
-                                        <input className="form-control" value={userPassword != null ? userPassword : ''} defaultValue={userPassword} name="userPassword" onChange={this.onChange} />
+                                        <input className="form-control" type="password" value={userPassword != null ? userPassword : ''} defaultValue={userPassword} name="userPassword" onChange={this.onChange} />
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
